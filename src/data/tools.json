@@ -1,0 +1,112 @@
+[
+  {
+    "id": "FF-30",
+    "name": "Fang of the Fudder",
+    "skill": "1H Pierce",
+    "class": "All",
+    "rarity": "Common",
+    "hashrate": 30,
+    "power": 40,
+    "imageUrl": "/images/FF-30.png"
+  },
+  {
+    "id": "WTF-1800",
+    "name": "Warglaive of The Fallen",
+    "skill": "1H Slash",
+    "class": "King",
+    "rarity": "Mythic",
+    "hashrate": 1800,
+    "power": 2349,
+    "imageUrl": "/images/WTF-1800.png"
+  },
+  {
+    "id": "MF5-600",
+    "name": "Miner's Fury",
+    "skill": "2H Blunt",
+    "class": "Lord & King",
+    "rarity": "Rare",
+    "hashrate": 600,
+    "power": 784,
+    "imageUrl": "/images/MF5-600.png"
+  },
+  {
+    "id": "DEH-60",
+    "name": "Dark Edge of Hal",
+    "skill": "1H Pick",
+    "class": "All",
+    "rarity": "Common",
+    "hashrate": 60,
+    "power": 79,
+    "imageUrl": "/images/DEH-60.png"
+  },
+  {
+    "id": "HEX-120Y",
+    "name": "Hash Extractor 120Y",
+    "skill": "2H Pick",
+    "class": "All",
+    "rarity": "Common",
+    "hashrate": 120,
+    "power": 164,
+    "imageUrl": "/images/HEX-120Y.png"
+  },
+  {
+    "id": "TKH-4800",
+    "name": "The King's Hand",
+    "skill": "1H Fist",
+    "class": "King",
+    "rarity": "Mythic",
+    "hashrate": 4800,
+    "power": 6269,
+    "imageUrl": "/images/TKH-4800.png"
+  },
+  {
+    "id": "BJB-480",
+    "name": "Berjerker's Blade",
+    "skill": "1H Slash",
+    "class": "Lord & King",
+    "rarity": "Epic",
+    "hashrate": 480,
+    "power": 629,
+    "imageUrl": "/images/BJB-480.png"
+  },
+  {
+    "id": "MRE-60",
+    "name": "Mustachio's Razor Edge",
+    "skill": "1H Slash",
+    "class": "All",
+    "rarity": "Rare",
+    "hashrate": 60,
+    "power": 74,
+    "imageUrl": "/images/MRE-60.png"
+  },
+  {
+    "id": "BB-1200",
+    "name": "Block Buster 1200",
+    "skill": "2H Blunt",
+    "class": "King",
+    "rarity": "Mythic",
+    "hashrate": 1200,
+    "power": 1499,
+    "imageUrl": "/images/BB-1200.png"
+  },
+  {
+    "id": "HS-240",
+    "name": "Hash Shatterer 240",
+    "skill": "2H Pick",
+    "class": "Lord & King",
+    "rarity": "Rare",
+    "hashrate": 240,
+    "power": 299,
+    "imageUrl": "/images/HS-240.png"
+  },
+  {
+    "id": "HEX-120",
+    "name": "Hash Extractor 120",
+    "skill": "2H Pick",
+    "class": "All",
+    "rarity": "Common",
+    "hashrate": 120,
+    "power": 149,
+    "imageUrl": "/images/HEX-120.png"
+  }
+]
