@@ -23,7 +23,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
         />
       </div>
       <p className="mb-1">Hashrate: {tool.hashrate} TH/s</p>
-      <p className="mb-1">Power Consumption: {tool.power} W</p>
+      <p className="mb-1">Monthly Power Bill: ${tool.monthlyPowerBill}</p>
       <p className="mb-1">Skill: {tool.skill}</p>
       <p className="mb-1">Class: {tool.class}</p>
       <p className="mb-2">Rarity: {tool.rarity}</p>

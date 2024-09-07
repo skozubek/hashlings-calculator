@@ -8,12 +8,15 @@ const InventoryManager: React.FC = () => {
 
   useEffect(() => {
     const fetchTools = async () => {
-      const response = await fetch('/api/tools');
-      if (response.ok) {
+      try {
+        const response = await fetch('/api/tools');
+        if (!response.ok) {
+          throw new Error('Failed to fetch tools');
+        }
         const toolsData: Tool[] = await response.json();
         setTools(toolsData);
-      } else {
-        console.error('Failed to fetch tools');
+      } catch (error) {
+        console.error('Error fetching tools:', error);
       }
     };
     fetchTools();
@@ -35,7 +38,7 @@ const InventoryManager: React.FC = () => {
                 <span>{tool.name} (Quantity: {item.quantity})</span>
                 <div>
                   <span className="mr-4">Hashrate: {tool.hashrate} TH/s</span>
-                  <span className="mr-4">Power: {tool.power} W</span>
+                  <span className="mr-4">Monthly Power Bill: ${tool.monthlyPowerBill}</span>
                   <button
                     onClick={() => removeFromInventory(item.toolId)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"

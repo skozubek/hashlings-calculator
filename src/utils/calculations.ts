@@ -4,12 +4,12 @@ export const calculateMiningRewards = (
   tool: Tool,
   bitcoinData: BitcoinData
 ): MiningCalculationResult => {
-  const { hashrate, power } = tool;
+  const { hashrate, monthlyPowerBill } = tool;
   const { price, networkDifficulty, networkHashrate, blockReward } = bitcoinData;
 
   // Calculate daily Bitcoin production
   const dailyBlocks = 144; // Average number of blocks mined per day
-  const networkHashrateInTH = networkHashrate / 1e12; // Convert to TH/s
+  const networkHashrateInTH = networkHashrate; // Already in TH/s
   const toolShare = hashrate / networkHashrateInTH;
   const dailyBtc = toolShare * blockReward * dailyBlocks;
 
@@ -20,10 +20,10 @@ export const calculateMiningRewards = (
   const monthlyBtc = dailyBtc * 30;
   const monthlyUsd = dailyUsd * 30;
 
-  // Calculate power costs (assuming $0.10 per kWh)
-  const dailyPowerCost = (power / 1000) * 24 * 0.10;
-  const weeklyPowerCost = dailyPowerCost * 7;
-  const monthlyPowerCost = dailyPowerCost * 30;
+  // Calculate power costs (now using the monthly power bill)
+  const dailyPowerCost = monthlyPowerBill / 30;
+  const weeklyPowerCost = monthlyPowerBill / 4;
+  const monthlyPowerCost = monthlyPowerBill;
 
   return {
     dailyBtc,
@@ -40,19 +40,19 @@ export const calculateFleetStats = (
   bitcoinData: BitcoinData
 ): FleetStats => {
   let totalHashrate = 0;
-  let totalPowerConsumption = 0;
+  let totalMonthlyPowerBill = 0;
   let projectedDailyEarnings = 0;
 
   tools.forEach((tool) => {
     totalHashrate += tool.hashrate;
-    totalPowerConsumption += tool.power;
+    totalMonthlyPowerBill += tool.monthlyPowerBill;
     const toolEarnings = calculateMiningRewards(tool, bitcoinData);
     projectedDailyEarnings += toolEarnings.dailyUsd;
   });
 
   return {
     totalHashrate,
-    totalPowerConsumption,
+    totalMonthlyPowerBill,
     projectedDailyEarnings,
     projectedMonthlyEarnings: projectedDailyEarnings * 30,
   };

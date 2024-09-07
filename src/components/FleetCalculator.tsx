@@ -43,7 +43,7 @@ const FleetCalculator: React.FC = () => {
       {fleetStats ? (
         <div>
           <p>Total Hashrate: {fleetStats.totalHashrate.toFixed(2)} TH/s</p>
-          <p>Total Power Consumption: {fleetStats.totalPowerConsumption.toFixed(2)} W</p>
+          <p>Total Monthly Power Bill: ${fleetStats.totalMonthlyPowerBill.toFixed(2)}</p>
           <p>Projected Daily Earnings: ${fleetStats.projectedDailyEarnings.toFixed(2)}</p>
           <p>Projected Monthly Earnings: ${fleetStats.projectedMonthlyEarnings.toFixed(2)}</p>
         </div>
