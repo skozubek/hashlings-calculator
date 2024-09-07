@@ -1,23 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { BitcoinData } from '../../types'
+import { BitcoinData, MinerstatResponse } from '../../types'
 
 const MINERSTAT_API_URL = 'https://api.minerstat.com/v2/coins?list=BTC'
-
-interface MinerstatResponse {
-  id: string;
-  coin: string;
-  name: string;
-  type: string;
-  algorithm: string;
-  network_hashrate: number;
-  difficulty: number;
-  reward: number;
-  reward_unit: string;
-  reward_block: number;
-  price: number;
-  volume: number;
-  updated: number;
-}
 
 export default async function handler(
   req: NextApiRequest,
@@ -40,10 +24,12 @@ export default async function handler(
 
     const btcData = data[0] // The API returns an array, but we only need the first (and only) item
 
+    console.log('Fetched Bitcoin data:', JSON.stringify(btcData, null, 2))
+
     const bitcoinData: BitcoinData = {
       price: btcData.price,
       networkDifficulty: btcData.difficulty,
-      networkHashrate: btcData.network_hashrate / 1e12, // Convert to TH/s
+      networkHashrate: btcData.network_hashrate / 1e18, // Convert to EH/s
       blockReward: btcData.reward_block,
       lastUpdated: btcData.updated
     }

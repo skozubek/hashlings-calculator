@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tool, BitcoinData, MiningCalculationResult } from '../types';
+import { Tool, MiningCalculationResult } from '../types';
 import { calculateMiningRewards } from '../utils/calculations';
 import { useBitcoinData } from '../hooks/useBitcoinData';
 
@@ -58,7 +58,7 @@ const MiningCalculator: React.FC = () => {
           <h3 className="text-xl font-semibold mb-2">Current Bitcoin Data</h3>
           <p>Price: ${bitcoinData.price.toFixed(2)}</p>
           <p>Network Difficulty: {bitcoinData.networkDifficulty.toExponential(2)}</p>
-          <p>Network Hashrate: {(bitcoinData.networkHashrate / 1e18).toFixed(2)} EH/s</p>
+          <p>Network Hashrate: {bitcoinData.networkHashrate.toFixed(2)} EH/s</p>
         </div>
       )}
     </div>

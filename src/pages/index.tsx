@@ -10,12 +10,15 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const fetchTools = async () => {
-      const response = await fetch('/api/tools');
-      if (response.ok) {
+      try {
+        const response = await fetch('/api/tools');
+        if (!response.ok) {
+          throw new Error('Failed to fetch tools');
+        }
         const toolsData: Tool[] = await response.json();
         setTools(toolsData);
-      } else {
-        console.error('Failed to fetch tools');
+      } catch (error) {
+        console.error('Error fetching tools:', error);
       }
     };
     fetchTools();

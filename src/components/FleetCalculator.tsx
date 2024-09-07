@@ -24,13 +24,26 @@ const FleetCalculator: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (tools.length > 0 && inventory.length > 0 && bitcoinData) {
+    if (tools.length > 0 && bitcoinData) {
       const fleetTools = inventory.flatMap(item =>
         Array(item.quantity).fill(tools.find(tool => tool.id === item.toolId))
       ).filter((tool): tool is Tool => tool !== undefined);
 
-      const stats = calculateFleetStats(fleetTools, bitcoinData);
-      setFleetStats(stats);
+      if (fleetTools.length > 0) {
+        const stats = calculateFleetStats(fleetTools, bitcoinData);
+        setFleetStats(stats);
+      } else {
+        // Reset fleet stats when no tools are in the inventory
+        setFleetStats({
+          totalHashrate: 0,
+          totalMonthlyPowerBill: 0,
+          projectedDailyRevenue: 0,
+          projectedDailyPowerCost: 0,
+          projectedDailyEarnings: 0,
+          projectedMonthlyEarnings: 0,
+          effectiveBuyingPrice: 0, // Add this line
+        });
+      }
     }
   }, [tools, inventory, bitcoinData]);
 
@@ -44,8 +57,11 @@ const FleetCalculator: React.FC = () => {
         <div>
           <p>Total Hashrate: {fleetStats.totalHashrate.toFixed(2)} TH/s</p>
           <p>Total Monthly Power Bill: ${fleetStats.totalMonthlyPowerBill.toFixed(2)}</p>
-          <p>Projected Daily Earnings: ${fleetStats.projectedDailyEarnings.toFixed(2)}</p>
-          <p>Projected Monthly Earnings: ${fleetStats.projectedMonthlyEarnings.toFixed(2)}</p>
+          <p>Projected Daily Revenue: ${fleetStats.projectedDailyRevenue.toFixed(2)}</p>
+          <p>Projected Daily Power Cost: ${fleetStats.projectedDailyPowerCost.toFixed(2)}</p>
+          <p>Projected Daily Net Earnings: ${fleetStats.projectedDailyEarnings.toFixed(2)}</p>
+          <p>Projected Monthly Net Earnings: ${fleetStats.projectedMonthlyEarnings.toFixed(2)}</p>
+          <p>Effective Buying Price: ${fleetStats.effectiveBuyingPrice.toFixed(2)}</p>
         </div>
       ) : (
         <p>Add tools to your inventory to see fleet statistics.</p>
