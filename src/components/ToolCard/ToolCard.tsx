@@ -30,8 +30,8 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
         className={`${styles.cardContainer} ${isFlipped ? styles.flipped : ''}`}
         onClick={handleClick}
       >
-        <div className={styles.card}>
-          <div className={`${styles.cardFront} bg-white`}>
+        <div className={`${styles.card} ${styles.hoverEffect}`}>
+          <div className={styles.cardFront}>
             <h2 className="text-xl font-bold mb-2">{tool.name}</h2>
             <div className={`${styles.imageContainer} relative w-full h-48 mb-2`}>
               <Image
@@ -51,8 +51,8 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
             </div>
           </div>
           <div className={`${styles.cardBack} bg-gray-100`}>
-            <h3 className="text-xl font-semibold mb-2">Mining Calculations</h3>
-            <div className="relative w-full h-24 mb-2">
+            <h3 className="text-xl font-semibold mb-4">Mining Calculations</h3>
+            <div className="relative w-full h-36 mb-4">
               <Image
                 src={tool.imageUrl}
                 alt={tool.name}
