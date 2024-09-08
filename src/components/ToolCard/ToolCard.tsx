@@ -24,10 +24,6 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     setIsFlipped(!isFlipped);
   };
 
-  const BoldLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <span className="font-bold">{children}</span>
-  );
-
   return (
     <div className={styles.cardWrapper}>
       <div
@@ -47,32 +43,32 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
               />
             </div>
             <div className="space-y-1 text-sm">
-              <p><BoldLabel>Hashrate:</BoldLabel> {tool.hashrate} TH/s</p>
-              <p><BoldLabel>Monthly Power Bill:</BoldLabel> ${tool.monthlyPowerBill}</p>
-              <p><BoldLabel>Skill:</BoldLabel> {tool.skill}</p>
-              <p><BoldLabel>Class:</BoldLabel> {tool.class}</p>
-              <p><BoldLabel>Rarity:</BoldLabel> {tool.rarity}</p>
+              <p><span className="font-bold">Hashrate:</span> {tool.hashrate} TH/s</p>
+              <p><span className="font-bold">Monthly Power Bill:</span> ${tool.monthlyPowerBill}</p>
+              <p><span className="font-bold">Skill:</span> {tool.skill}</p>
+              <p><span className="font-bold">Class:</span> {tool.class}</p>
+              <p><span className="font-bold">Rarity:</span> {tool.rarity}</p>
             </div>
           </div>
           <div className={`${styles.cardBack} bg-gray-100`}>
             <h3 className="text-xl font-semibold mb-2">Mining Calculations</h3>
-            <div className={`${styles.backImageContainer} mb-2`}>
+            <div className="relative w-full h-24 mb-2">
               <Image
                 src={tool.imageUrl}
                 alt={tool.name}
                 layout="fill"
                 objectFit="contain"
-                className={`${styles.backCardImage} rounded-md`}
+                className="rounded-md"
               />
             </div>
             {loading && <p>Loading calculations...</p>}
             {error && <p className="text-red-500">Error: {error}</p>}
             {calculationResult && (
               <div className="space-y-1 text-sm">
-                <p><BoldLabel>Daily:</BoldLabel> {calculationResult.dailyBtc.toFixed(8)} BTC (${calculationResult.dailyUsd.toFixed(2)})</p>
-                <p><BoldLabel>Weekly:</BoldLabel> {calculationResult.weeklyBtc.toFixed(8)} BTC (${calculationResult.weeklyUsd.toFixed(2)})</p>
-                <p><BoldLabel>Monthly:</BoldLabel> {calculationResult.monthlyBtc.toFixed(8)} BTC (${calculationResult.monthlyUsd.toFixed(2)})</p>
-                <p><BoldLabel>Effective Buying Price:</BoldLabel> ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
+                <p><span className="font-bold">Daily:</span> {calculationResult.dailyBtc.toFixed(8)} BTC (${calculationResult.dailyUsd.toFixed(2)})</p>
+                <p><span className="font-bold">Weekly:</span> {calculationResult.weeklyBtc.toFixed(8)} BTC (${calculationResult.weeklyUsd.toFixed(2)})</p>
+                <p><span className="font-bold">Monthly:</span> {calculationResult.monthlyBtc.toFixed(8)} BTC (${calculationResult.monthlyUsd.toFixed(2)})</p>
+                <p><span className="font-bold">Effective Buying Price:</span> ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
               </div>
             )}
           </div>
@@ -83,7 +79,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
           e.stopPropagation();
           addToInventory(tool);
         }}
-        className="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+        className="mt-2 w-full bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
       >
         Add to Inventory
       </button>

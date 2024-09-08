@@ -102,12 +102,14 @@ const InventoryManager: React.FC = () => {
           );
         })}
       </AnimatePresence>
-      <button
-        onClick={clearInventory}
-        className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full sm:w-auto"
-      >
-        Clear Inventory
-      </button>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={clearInventory}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+        >
+          Clear Inventory
+        </button>
+      </div>
     </div>
   );
 };

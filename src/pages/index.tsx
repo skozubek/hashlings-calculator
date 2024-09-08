@@ -22,10 +22,10 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8">Hashlings Calculator</h1>
+      <h1 className="text-4xl font-bold mb-8">HashCrafters Calculator</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
-          <h2 className="text-2xl font-bold mb-4">Available Tools</h2>
+          <h2 className="text-2xl font-bold mb-4">Available HashCrafters</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {tools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
