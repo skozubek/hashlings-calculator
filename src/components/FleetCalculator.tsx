@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tool, FleetStats } from '../types';
 import { calculateFleetStats } from '../utils/calculations';
 import { useInventoryContext } from '../contexts/InventoryContext';
-import { useBitcoinData } from '../hooks/useBitcoinData';
+import { useBitcoinData } from '../contexts/BitcoinContext';
 
 const FleetCalculator: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -33,7 +33,6 @@ const FleetCalculator: React.FC = () => {
         const stats = calculateFleetStats(fleetTools, bitcoinData);
         setFleetStats(stats);
       } else {
-        // Reset fleet stats when no tools are in the inventory
         setFleetStats({
           totalHashrate: 0,
           totalMonthlyPowerBill: 0,
@@ -41,7 +40,7 @@ const FleetCalculator: React.FC = () => {
           projectedDailyPowerCost: 0,
           projectedDailyEarnings: 0,
           projectedMonthlyEarnings: 0,
-          effectiveBuyingPrice: 0, // Add this line
+          effectiveBuyingPrice: 0,
         });
       }
     }
@@ -57,16 +56,12 @@ const FleetCalculator: React.FC = () => {
         <div className="space-y-2 text-sm">
           <p><span className="font-bold">Total Hashrate:</span> {fleetStats.totalHashrate.toFixed(2)} TH/s</p>
           <p><span className="font-bold">Total Monthly Power Bill:</span> ${fleetStats.totalMonthlyPowerBill.toFixed(2)}</p>
-
           <hr className="my-3 border-gray-300" />
-
           <p><span className="font-bold">Daily Revenue:</span> ${fleetStats.projectedDailyRevenue.toFixed(2)}</p>
           <p><span className="font-bold">Daily Power Cost:</span> ${fleetStats.projectedDailyPowerCost.toFixed(2)}</p>
           <p><span className="font-bold">Daily Net Earnings:</span> ${fleetStats.projectedDailyEarnings.toFixed(2)}</p>
           <p><span className="font-bold">Monthly Net Earnings:</span> ${fleetStats.projectedMonthlyEarnings.toFixed(2)}</p>
-
           <hr className="my-3 border-gray-300" />
-
           <p><span className="font-bold">Effective BTC Price:</span> ${fleetStats.effectiveBuyingPrice.toFixed(2)}</p>
         </div>
       ) : (

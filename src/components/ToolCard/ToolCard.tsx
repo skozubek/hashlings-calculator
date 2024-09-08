@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Tool, MiningCalculationResult } from '@/types';
 import { useInventoryContext } from '@/contexts/InventoryContext';
-import { useBitcoinData } from '@/hooks/useBitcoinData';
+import { useBitcoinData } from '@/contexts/BitcoinContext';
 import { calculateMiningRewards } from '@/utils/calculations';
 import styles from './ToolCard.module.css';
 
@@ -16,11 +16,14 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
   const { bitcoinData, loading, error } = useBitcoinData();
   const [calculationResult, setCalculationResult] = useState<MiningCalculationResult | null>(null);
 
-  const handleClick = () => {
+  useEffect(() => {
     if (bitcoinData) {
       const result = calculateMiningRewards(tool, bitcoinData);
       setCalculationResult(result);
     }
+  }, [tool, bitcoinData]);
+
+  const handleClick = () => {
     setIsFlipped(!isFlipped);
   };
 

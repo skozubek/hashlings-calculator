@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tool, MiningCalculationResult } from '../types';
 import { calculateMiningRewards } from '../utils/calculations';
-import { useBitcoinData } from '../hooks/useBitcoinData';
+import { useBitcoinData } from '../contexts/BitcoinContext';
 
 const MiningCalculator: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
@@ -51,6 +51,7 @@ const MiningCalculator: React.FC = () => {
           <p>Daily: {calculationResult.dailyBtc.toFixed(8)} BTC (${calculationResult.dailyUsd.toFixed(2)})</p>
           <p>Weekly: {calculationResult.weeklyBtc.toFixed(8)} BTC (${calculationResult.weeklyUsd.toFixed(2)})</p>
           <p>Monthly: {calculationResult.monthlyBtc.toFixed(8)} BTC (${calculationResult.monthlyUsd.toFixed(2)})</p>
+          <p>Effective Buying Price: ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
         </div>
       )}
       {bitcoinData && (

@@ -12,6 +12,7 @@ export default async function handler(
   }
 
   try {
+    console.log('Fetching Bitcoin data from Minerstat...')
     const response = await fetch(MINERSTAT_API_URL)
     if (!response.ok) {
       throw new Error('Failed to fetch Bitcoin data')
@@ -23,8 +24,7 @@ export default async function handler(
     }
 
     const btcData = data[0] // The API returns an array, but we only need the first (and only) item
-
-    console.log('Fetched Bitcoin data:', JSON.stringify(btcData, null, 2))
+    console.log('Received data from Minerstat:', btcData)
 
     const bitcoinData: BitcoinData = {
       price: btcData.price,
@@ -34,6 +34,7 @@ export default async function handler(
       lastUpdated: btcData.updated
     }
 
+    console.log('Sending Bitcoin data to client:', bitcoinData)
     res.status(200).json(bitcoinData)
   } catch (error) {
     console.error('Error fetching Bitcoin data:', error)

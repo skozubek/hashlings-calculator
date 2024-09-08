@@ -4,7 +4,7 @@ import ToolCard from '../components/ToolCard/ToolCard';
 import InventoryManager from '../components/InventoryManager';
 import FleetCalculator from '../components/FleetCalculator';
 import { Tool } from '../types';
-import { useBitcoinData } from '../hooks/useBitcoinData';
+import { useBitcoinData } from '../contexts/BitcoinContext';
 
 const HomePage: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
