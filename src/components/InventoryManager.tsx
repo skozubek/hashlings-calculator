@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useInventoryContext } from '../contexts/InventoryContext';
-import { useBitcoinData } from '../hooks/useBitcoinData';
-import { Tool, FleetStats } from '../types';
+import { Tool } from '../types';
 import { ChevronUp, ChevronDown, Trash2 } from 'lucide-react';
-import { calculateFleetStats } from '../utils/calculations';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const InventoryManager: React.FC = () => {
   const { inventory, removeFromInventory, updateQuantity, clearInventory } = useInventoryContext();
   const [tools, setTools] = useState<Tool[]>([]);
-  const { bitcoinData, loading, error } = useBitcoinData();
-  const [fleetStats, setFleetStats] = useState<FleetStats | null>(null);
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -28,18 +24,6 @@ const InventoryManager: React.FC = () => {
     };
     fetchTools();
   }, []);
-
-  useEffect(() => {
-    if (bitcoinData && tools.length > 0) {
-      const inventoryTools = inventory.map(item => {
-        const tool = tools.find(t => t.id === item.toolId);
-        return { ...tool!, quantity: item.quantity };
-      }).filter((tool): tool is Tool & { quantity: number } => tool !== undefined);
-
-      const stats = calculateFleetStats(inventoryTools, bitcoinData);
-      setFleetStats(stats);
-    }
-  }, [inventory, bitcoinData, tools]);
 
   const getToolById = (id: string) => tools.find(tool => tool.id === id);
 
