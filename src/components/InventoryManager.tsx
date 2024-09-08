@@ -39,68 +39,72 @@ const InventoryManager: React.FC = () => {
           const tool = getToolById(item.toolId);
           if (!tool) return null;
           return (
-            <motion.li
+            <motion.div
               key={item.toolId}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="flex items-center space-x-4 mb-4"
+              className="flex flex-wrap items-center justify-between space-y-2 sm:space-y-0 mb-4 pb-4 border-b last:border-b-0"
             >
-              <div className="relative w-16 h-16">
-                <Image
-                  src={tool.imageUrl}
-                  alt={tool.name}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-md"
-                />
-              </div>
-              <div className="flex-grow">
-                <h3 className="font-semibold">{tool.name}</h3>
-                <div className="flex items-center space-x-2">
-                  <div className="flex items-center">
-                    <button
-                      onClick={() => updateQuantity(item.toolId, Math.max(1, item.quantity - 1))}
-                      className="p-1 bg-gray-200 rounded-l hover:bg-gray-300 transition-colors"
-                    >
-                      <ChevronDown size={16} />
-                    </button>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => {
-                        const newQuantity = Math.max(1, parseInt(e.target.value) || 1);
-                        updateQuantity(item.toolId, newQuantity);
-                      }}
-                      className="w-16 text-center border-y border-gray-200"
-                      min="1"
-                    />
-                    <button
-                      onClick={() => updateQuantity(item.toolId, item.quantity + 1)}
-                      className="p-1 bg-gray-200 rounded-r hover:bg-gray-300 transition-colors"
-                    >
-                      <ChevronUp size={16} />
-                    </button>
+              <div className="flex items-center space-x-4 w-full sm:w-auto">
+                <div className="relative w-12 h-12 flex-shrink-0">
+                  <Image
+                    src={tool.imageUrl}
+                    alt={tool.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
+                <div className="flex-grow min-w-0 max-w-full">
+                  <h3 className="font-semibold truncate">{tool.name}</h3>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => updateQuantity(item.toolId, Math.max(1, item.quantity - 1))}
+                        className="p-1 bg-gray-200 rounded-l hover:bg-gray-300 transition-colors"
+                      >
+                        <ChevronDown size={14} />
+                      </button>
+                      <input
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const newQuantity = Math.max(1, parseInt(e.target.value) || 1);
+                          updateQuantity(item.toolId, newQuantity);
+                        }}
+                        className="w-12 text-center border-y border-gray-200 text-sm"
+                        min="1"
+                      />
+                      <button
+                        onClick={() => updateQuantity(item.toolId, item.quantity + 1)}
+                        className="p-1 bg-gray-200 rounded-r hover:bg-gray-300 transition-colors"
+                      >
+                        <ChevronUp size={14} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="text-right">
-                <p>Hashrate: {tool.hashrate * item.quantity} TH/s</p>
-                <p>Monthly Power Bill: ${(tool.monthlyPowerBill * item.quantity).toFixed(2)}</p>
+              <div className="flex items-center justify-between w-full sm:w-auto space-x-4">
+                <div className="text-sm">
+                  <p><span className="font-bold">HR:</span> {tool.hashrate * item.quantity} TH/s</p>
+                  <p><span className="font-bold">MPB:</span> ${(tool.monthlyPowerBill * item.quantity).toFixed(2)}</p>
+                </div>
+                <button
+                  onClick={() => removeFromInventory(item.toolId)}
+                  className="p-2 text-red-500 hover:text-red-700 transition-colors"
+                >
+                  <Trash2 size={20} />
+                </button>
               </div>
-              <button
-                onClick={() => removeFromInventory(item.toolId)}
-                className="p-2 text-red-500 hover:text-red-700 transition-colors"
-              >
-                <Trash2 size={20} />
-              </button>
-            </motion.li>
+            </motion.div>
           );
         })}
       </AnimatePresence>
       <button
         onClick={clearInventory}
-        className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+        className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors w-full sm:w-auto"
       >
         Clear Inventory
       </button>
