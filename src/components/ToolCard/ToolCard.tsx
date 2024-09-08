@@ -37,13 +37,13 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
         <div className={styles.card}>
           <div className={`${styles.cardFront} bg-white`}>
             <h2 className="text-xl font-bold mb-2">{tool.name}</h2>
-            <div className="relative w-full h-48 mb-2">
+            <div className={`${styles.imageContainer} relative w-full h-48 mb-2`}>
               <Image
                 src={tool.imageUrl}
                 alt={tool.name}
                 layout="fill"
                 objectFit="cover"
-                className="rounded-md"
+                className={`${styles.cardImage} rounded-md`}
               />
             </div>
             <div className="space-y-1 text-sm">
@@ -56,13 +56,13 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
           </div>
           <div className={`${styles.cardBack} bg-gray-100`}>
             <h3 className="text-xl font-semibold mb-2">Mining Calculations</h3>
-            <div className="relative w-full h-24 mb-2">
+            <div className={`${styles.backImageContainer} mb-2`}>
               <Image
                 src={tool.imageUrl}
                 alt={tool.name}
                 layout="fill"
                 objectFit="contain"
-                className="rounded-md"
+                className={`${styles.backCardImage} rounded-md`}
               />
             </div>
             {loading && <p>Loading calculations...</p>}
