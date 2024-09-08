@@ -24,6 +24,10 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
     setIsFlipped(!isFlipped);
   };
 
+  const BoldLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <span className="font-bold">{children}</span>
+  );
+
   return (
     <div className={styles.cardWrapper}>
       <div
@@ -31,7 +35,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
         onClick={handleClick}
       >
         <div className={styles.card}>
-          <div className={styles.cardFront}>
+          <div className={`${styles.cardFront} bg-white`}>
             <h2 className="text-xl font-bold mb-2">{tool.name}</h2>
             <div className="relative w-full h-48 mb-2">
               <Image
@@ -42,23 +46,34 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
                 className="rounded-md"
               />
             </div>
-            <p className="mb-1">Hashrate: {tool.hashrate} TH/s</p>
-            <p className="mb-1">Monthly Power Bill: ${tool.monthlyPowerBill}</p>
-            <p className="mb-1">Skill: {tool.skill}</p>
-            <p className="mb-1">Class: {tool.class}</p>
-            <p className="mb-2">Rarity: {tool.rarity}</p>
+            <div className="space-y-1 text-sm">
+              <p><BoldLabel>Hashrate:</BoldLabel> {tool.hashrate} TH/s</p>
+              <p><BoldLabel>Monthly Power Bill:</BoldLabel> ${tool.monthlyPowerBill}</p>
+              <p><BoldLabel>Skill:</BoldLabel> {tool.skill}</p>
+              <p><BoldLabel>Class:</BoldLabel> {tool.class}</p>
+              <p><BoldLabel>Rarity:</BoldLabel> {tool.rarity}</p>
+            </div>
           </div>
-          <div className={styles.cardBack}>
+          <div className={`${styles.cardBack} bg-gray-100`}>
             <h3 className="text-xl font-semibold mb-2">Mining Calculations</h3>
+            <div className="relative w-full h-24 mb-2">
+              <Image
+                src={tool.imageUrl}
+                alt={tool.name}
+                layout="fill"
+                objectFit="contain"
+                className="rounded-md"
+              />
+            </div>
             {loading && <p>Loading calculations...</p>}
-            {error && <p>Error: {error}</p>}
+            {error && <p className="text-red-500">Error: {error}</p>}
             {calculationResult && (
-              <>
-                <p>Daily: {calculationResult.dailyBtc.toFixed(8)} BTC (${calculationResult.dailyUsd.toFixed(2)})</p>
-                <p>Weekly: {calculationResult.weeklyBtc.toFixed(8)} BTC (${calculationResult.weeklyUsd.toFixed(2)})</p>
-                <p>Monthly: {calculationResult.monthlyBtc.toFixed(8)} BTC (${calculationResult.monthlyUsd.toFixed(2)})</p>
-                <p>Effective Buying Price: ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
-              </>
+              <div className="space-y-1 text-sm">
+                <p><BoldLabel>Daily:</BoldLabel> {calculationResult.dailyBtc.toFixed(8)} BTC (${calculationResult.dailyUsd.toFixed(2)})</p>
+                <p><BoldLabel>Weekly:</BoldLabel> {calculationResult.weeklyBtc.toFixed(8)} BTC (${calculationResult.weeklyUsd.toFixed(2)})</p>
+                <p><BoldLabel>Monthly:</BoldLabel> {calculationResult.monthlyBtc.toFixed(8)} BTC (${calculationResult.monthlyUsd.toFixed(2)})</p>
+                <p><BoldLabel>Effective Buying Price:</BoldLabel> ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
+              </div>
             )}
           </div>
         </div>
@@ -68,7 +83,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
           e.stopPropagation();
           addToInventory(tool);
         }}
-        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+        className="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
       >
         Add to Inventory
       </button>
