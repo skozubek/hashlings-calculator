@@ -6,6 +6,7 @@ interface InventoryContextType {
   inventory: InventoryItem[];
   addToInventory: (tool: Tool) => void;
   removeFromInventory: (toolId: string) => void;
+  updateQuantity: (toolId: string, newQuantity: number) => void;
   clearInventory: () => void;
 }
 

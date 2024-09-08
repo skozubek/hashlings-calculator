@@ -18,16 +18,15 @@ export const useInventory = () => {
   }, []);
 
   const removeFromInventory = useCallback((toolId: string) => {
-    setInventory((prevInventory) => {
-      const existingItem = prevInventory.find(item => item.toolId === toolId);
-      if (existingItem && existingItem.quantity > 1) {
-        return prevInventory.map(item =>
-          item.toolId === toolId ? { ...item, quantity: item.quantity - 1 } : item
-        );
-      } else {
-        return prevInventory.filter(item => item.toolId !== toolId);
-      }
-    });
+    setInventory((prevInventory) => prevInventory.filter(item => item.toolId !== toolId));
+  }, []);
+
+  const updateQuantity = useCallback((toolId: string, newQuantity: number) => {
+    setInventory((prevInventory) =>
+      prevInventory.map(item =>
+        item.toolId === toolId ? { ...item, quantity: Math.max(1, newQuantity) } : item
+      )
+    );
   }, []);
 
   const clearInventory = useCallback(() => {
@@ -38,6 +37,7 @@ export const useInventory = () => {
     inventory,
     addToInventory,
     removeFromInventory,
+    updateQuantity,
     clearInventory,
   };
 };
