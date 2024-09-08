@@ -68,17 +68,9 @@ const FleetCalculator: React.FC = () => {
         <div className="text-center p-6 bg-gray-100 rounded-lg">
           <p className="text-lg font-semibold mb-2">Your mining fleet is empty!</p>
           <p className="text-gray-600">
-            Add tools to your inventory to see detailed fleet calculations, including:
+            Add tools to your inventory to see detailed fleet calculations.
           </p>
-          <ul className="list-disc list-inside text-gray-600 mt-2">
-            <li>Total hashrate</li>
-            <li>Power consumption</li>
-            <li>Projected earnings</li>
-            <li>And more!</li>
-          </ul>
-          <p className="mt-4 text-sm text-gray-500">
-            Start building your fleet to optimize your mining operations.
-          </p>
+
         </div>
       )}
     </div>

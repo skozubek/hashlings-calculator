@@ -71,7 +71,7 @@ const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
                 <p><span className="font-bold">Daily:</span> {calculationResult.dailyBtc.toFixed(8)} BTC (${calculationResult.dailyUsd.toFixed(2)})</p>
                 <p><span className="font-bold">Weekly:</span> {calculationResult.weeklyBtc.toFixed(8)} BTC (${calculationResult.weeklyUsd.toFixed(2)})</p>
                 <p><span className="font-bold">Monthly:</span> {calculationResult.monthlyBtc.toFixed(8)} BTC (${calculationResult.monthlyUsd.toFixed(2)})</p>
-                <p><span className="font-bold">Effective Buying Price:</span> ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
+                <p><span className="font-bold">Effective BTC Price:</span> ${calculationResult.effectiveBuyingPrice.toFixed(2)}</p>
               </div>
             )}
           </div>

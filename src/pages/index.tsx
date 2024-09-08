@@ -38,19 +38,21 @@ const HomePage: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          <h2 className="text-2xl font-bold mb-4">Available HashCrafters</h2>
+      <h2 className="text-2xl font-bold mb-8">Available HashCrafters</h2>
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:w-[65%]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {tools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
             ))}
           </div>
         </div>
-        <div>
-          <FleetCalculator />
-          <div className="mt-8">
-            <InventoryManager />
+        <div className="lg:w-[35%]">
+          <div className="sticky top-8">
+            <FleetCalculator />
+            <div className="mt-8">
+              <InventoryManager />
+            </div>
           </div>
         </div>
       </div>

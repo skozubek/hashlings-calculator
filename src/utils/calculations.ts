@@ -32,13 +32,6 @@ export const calculateMiningRewards = (
   // Calculate effective buying price
   const effectiveBuyingPrice = dailyPowerCost / dailyBtc;
 
-  // Add logging for debugging
-  console.log('Tool hashrate:', hashrate, 'TH/s');
-  console.log('Network difficulty:', networkDifficulty);
-  console.log('Daily BTC:', dailyBtc);
-  console.log('Daily USD (after power cost and pool fee):', dailyUsd);
-  console.log('Effective buying price:', effectiveBuyingPrice);
-
   return {
     dailyBtc,
     weeklyBtc,
