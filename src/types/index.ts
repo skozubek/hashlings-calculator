@@ -58,3 +58,34 @@ export interface MinerstatResponse {
   volume: number;
   updated: number;
 }
+
+export interface Metadata {
+  Artist: string;
+  Class: string;
+  Hashrate: number;
+  Model: string;
+  Name: string;
+  Power: number;
+  Rarity: string;
+  Skill: string;
+  [key: string]: string | number | boolean | null | undefined;
+}
+
+export interface Inscription {
+  content_type: string;
+  content_url: string;
+  delegate_inscription_id: string | null;
+  genesis_address: string;
+  genesis_output: string;
+  inscription_id: string;
+  inscription_number: number;
+  metadata: Metadata;
+  metaprotocol: string | null;
+  owner_address: string;
+  owner_output: string;
+  parent_inscription_id: string | null;
+  sat: number;
+  satributes: string[];
+  submodules: string[];
+  timestamp: string;
+}

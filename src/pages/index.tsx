@@ -3,12 +3,14 @@ import Image from 'next/image';
 import ToolCard from '../components/ToolCard/ToolCard';
 import InventoryManager from '../components/InventoryManager';
 import FleetCalculator from '../components/FleetCalculator';
-import { Tool } from '../types';
+import WalletConnect from '../components/WalletConnect';
+import { Tool, Inscription } from '../types';
 import { useBitcoinData } from '../contexts/BitcoinContext';
 
 const HomePage: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const { bitcoinData, loading, error } = useBitcoinData();
+  const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -22,6 +24,43 @@ const HomePage: React.FC = () => {
     };
     fetchTools();
   }, []);
+
+  useEffect(() => {
+    if (connectedAddress) {
+      fetchInscriptions(connectedAddress);
+    }
+  }, [connectedAddress]);
+
+  const fetchInscriptions = async (address: string) => {
+    try {
+      const response = await fetch(`/api/verify-ordinals?address=${address}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        if (responseData.data && Array.isArray(responseData.data)) {
+          const hashcrafters = filterHashcrafters(responseData.data);
+          console.log('Hashcrafters found:', hashcrafters);
+        } else {
+          console.error('Inscriptions data is not in the expected format:', responseData);
+        }
+      } else {
+        console.error('Failed to fetch inscriptions');
+      }
+    } catch (error) {
+      console.error('Error fetching inscriptions:', error);
+    }
+  };
+
+  const filterHashcrafters = (inscriptions: Inscription[]): Inscription[] => {
+    const toolNames = tools.map(tool => tool.name);
+    return inscriptions.filter(inscription =>
+      inscription.metadata &&
+      toolNames.includes(inscription.metadata.Name)
+    );
+  };
+
+  const handleAddressChange = (address: string | null) => {
+    setConnectedAddress(address);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -38,7 +77,8 @@ const HomePage: React.FC = () => {
           )}
         </div>
       </div>
-      <h2 className="text-2xl font-bold mb-8">Available HashCrafters</h2>
+      <WalletConnect onAddressChange={handleAddressChange} />
+      <h2 className="text-2xl font-bold mb-8 mt-4">Available HashCrafters</h2>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-[65%]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
