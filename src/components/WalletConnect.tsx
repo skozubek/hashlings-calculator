@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAddress } from 'sats-connect';
+import { getAddress, GetAddressResponse, AddressPurpose, BitcoinNetworkType } from 'sats-connect';
 
 interface WalletConnectProps {
   onAddressChange: (address: string | null) => void;
@@ -12,13 +12,13 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onAddressChange }) => {
     try {
       const getAddressOptions = {
         payload: {
-          purposes: ['ordinals', 'payment'],
+          purposes: ['ordinals', 'payment'] as AddressPurpose[],
           message: 'Address for HashCrafters',
           network: {
-            type: 'Mainnet'
+            type: 'Mainnet' as BitcoinNetworkType,
           },
         },
-        onFinish: (response: any) => {
+        onFinish: (response: GetAddressResponse) => {
           const newAddress = response.addresses[0].address;
           setAddress(newAddress);
           onAddressChange(newAddress);

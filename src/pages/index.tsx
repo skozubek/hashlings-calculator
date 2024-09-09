@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import ToolCard from '../components/ToolCard/ToolCard';
 import InventoryManager from '../components/InventoryManager';
@@ -11,6 +11,36 @@ const HomePage: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const { bitcoinData, loading, error } = useBitcoinData();
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
+  const [fetchedAddresses, setFetchedAddresses] = useState<Set<string>>(new Set());
+
+  const filterHashcrafters = useCallback((inscriptions: Inscription[]): Inscription[] => {
+    const toolNames = tools.map(tool => tool.name);
+    return inscriptions.filter(inscription =>
+      inscription.metadata &&
+      toolNames.includes(inscription.metadata.Name)
+    );
+  }, [tools]);
+
+  const fetchInscriptions = useCallback(async (address: string) => {
+    if (fetchedAddresses.has(address)) return;
+    try {
+      const response = await fetch(`/api/verify-ordinals?address=${address}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        if (responseData.data && Array.isArray(responseData.data)) {
+          const hashcrafters = filterHashcrafters(responseData.data);
+          console.log('Hashcrafters found:', hashcrafters);
+          setFetchedAddresses(prev => new Set(prev).add(address));
+        } else {
+          console.error('Inscriptions data is not in the expected format:', responseData);
+        }
+      } else {
+        console.error('Failed to fetch inscriptions');
+      }
+    } catch (error) {
+      console.error('Error fetching inscriptions:', error);
+    }
+  }, [filterHashcrafters, fetchedAddresses]);
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -29,34 +59,7 @@ const HomePage: React.FC = () => {
     if (connectedAddress) {
       fetchInscriptions(connectedAddress);
     }
-  }, [connectedAddress]);
-
-  const fetchInscriptions = async (address: string) => {
-    try {
-      const response = await fetch(`/api/verify-ordinals?address=${address}`);
-      if (response.ok) {
-        const responseData = await response.json();
-        if (responseData.data && Array.isArray(responseData.data)) {
-          const hashcrafters = filterHashcrafters(responseData.data);
-          console.log('Hashcrafters found:', hashcrafters);
-        } else {
-          console.error('Inscriptions data is not in the expected format:', responseData);
-        }
-      } else {
-        console.error('Failed to fetch inscriptions');
-      }
-    } catch (error) {
-      console.error('Error fetching inscriptions:', error);
-    }
-  };
-
-  const filterHashcrafters = (inscriptions: Inscription[]): Inscription[] => {
-    const toolNames = tools.map(tool => tool.name);
-    return inscriptions.filter(inscription =>
-      inscription.metadata &&
-      toolNames.includes(inscription.metadata.Name)
-    );
-  };
+  }, [connectedAddress, fetchInscriptions]);
 
   const handleAddressChange = (address: string | null) => {
     setConnectedAddress(address);
