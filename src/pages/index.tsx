@@ -66,18 +66,20 @@ const HomePage: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">HashCrafters Calculator</h1>
-        <div className="flex items-center space-x-2">
-          <Image src="/images/BTC.svg" alt="Bitcoin logo" width={32} height={32} />
-          {loading ? (
-            <span className="text-lg font-semibold">Loading...</span>
-          ) : error ? (
-            <span className="text-lg font-semibold text-red-500">Error loading BTC price</span>
-          ) : (
-            <span className="text-lg font-semibold">${bitcoinData?.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-          )}
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <Image src="/images/BTC.svg" alt="Bitcoin logo" width={32} height={32} />
+            {loading ? (
+              <span className="text-lg font-semibold">Loading...</span>
+            ) : error ? (
+              <span className="text-lg font-semibold text-red-500">Error loading BTC price</span>
+            ) : (
+              <span className="text-lg font-semibold">${bitcoinData?.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+            )}
+          </div>
+          <WalletConnect onAddressChange={handleAddressChange} />
         </div>
       </div>
-      <WalletConnect onAddressChange={handleAddressChange} />
       <h2 className="text-2xl font-bold mb-8 mt-4">Available HashCrafters</h2>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-[65%]">
