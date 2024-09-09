@@ -33,13 +33,30 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onAddressChange }) => {
     }
   };
 
+  const truncateAddress = (address: string) => {
+    return `${address.slice(0, 5)}...${address.slice(-3)}`;
+  };
+
+  const showHashCrafters = () => {
+    // This is a placeholder. You should implement the actual functionality here.
+    alert('Showing HashCrafters (to be implemented)');
+  };
+
   return (
     <div>
-      {address ? (
-        <p>Connected: {address}</p>
-      ) : (
-        <button onClick={connectWallet} className="bg-blue-500 text-white px-4 py-2 rounded">
+      {!address ? (
+        <button
+          onClick={connectWallet}
+          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+        >
           Connect Xverse Wallet
+        </button>
+      ) : (
+        <button
+          onClick={showHashCrafters}
+          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+        >
+          {truncateAddress(address)}
         </button>
       )}
     </div>

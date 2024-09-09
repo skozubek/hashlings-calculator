@@ -11,7 +11,6 @@ const HomePage: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const { bitcoinData, loading, error } = useBitcoinData();
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
-  const [fetchedAddresses, setFetchedAddresses] = useState<Set<string>>(new Set());
 
   const filterHashcrafters = useCallback((inscriptions: Inscription[]): Inscription[] => {
     const toolNames = tools.map(tool => tool.name);
@@ -22,7 +21,6 @@ const HomePage: React.FC = () => {
   }, [tools]);
 
   const fetchInscriptions = useCallback(async (address: string) => {
-    if (fetchedAddresses.has(address)) return;
     try {
       const response = await fetch(`/api/verify-ordinals?address=${address}`);
       if (response.ok) {
@@ -30,7 +28,6 @@ const HomePage: React.FC = () => {
         if (responseData.data && Array.isArray(responseData.data)) {
           const hashcrafters = filterHashcrafters(responseData.data);
           console.log('Hashcrafters found:', hashcrafters);
-          setFetchedAddresses(prev => new Set(prev).add(address));
         } else {
           console.error('Inscriptions data is not in the expected format:', responseData);
         }
@@ -40,7 +37,7 @@ const HomePage: React.FC = () => {
     } catch (error) {
       console.error('Error fetching inscriptions:', error);
     }
-  }, [filterHashcrafters, fetchedAddresses]);
+  }, [filterHashcrafters]);
 
   useEffect(() => {
     const fetchTools = async () => {
