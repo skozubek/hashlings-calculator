@@ -33,25 +33,6 @@ const HomePage: React.FC = () => {
     setConnectedAddress(address);
   };
 
-  const verifyStoredHashcrafters = () => {
-    console.log('Verifying stored Hashcrafters...');
-    if (userHashcrafters.length > 0) {
-      console.log('Number of stored Hashcrafters:', userHashcrafters.length);
-      userHashcrafters.forEach((hashcrafter, index) => {
-        console.log(`Hashcrafter ${index + 1}:`);
-        console.log('  Inscription ID:', hashcrafter.inscription_id);
-        console.log('  Name:', hashcrafter.metadata?.Name);
-        console.log('  Model:', hashcrafter.metadata?.Model);
-        console.log('  Hashrate:', hashcrafter.metadata?.Hashrate);
-        console.log('  Rarity:', hashcrafter.metadata?.Rarity);
-        console.log('---');
-      });
-    } else {
-      console.log('No Hashcrafters stored.');
-    }
-    console.log('Verification complete.');
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
@@ -70,15 +51,13 @@ const HomePage: React.FC = () => {
           <WalletConnect onAddressChange={handleAddressChange} tools={tools} />
         </div>
       </div>
-      <button
-        onClick={verifyStoredHashcrafters}
-        className="bg-green-500 text-white px-4 py-2 rounded mb-4"
-      >
-        Verify Stored Hashcrafters
-      </button>
-      {hashcraftersLoading && <p>Loading user's Hashcrafters...</p>}
+
+      {hashcraftersLoading && <p>Loading users Hashcrafters...</p>}
       {hashcraftersError && <p className="text-red-500">Error: {hashcraftersError}</p>}
       <h2 className="text-2xl font-bold mb-8 mt-4">Available HashCrafters</h2>
+      {userHashcrafters.length > 0 && (
+  <p>You have {userHashcrafters.length} Hashcrafter(s) in your wallet.</p>
+    )}
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-[65%]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
