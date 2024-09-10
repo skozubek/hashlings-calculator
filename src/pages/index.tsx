@@ -1,43 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+// pages/index.tsx
+
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ToolCard from '../components/ToolCard/ToolCard';
 import InventoryManager from '../components/InventoryManager';
 import FleetCalculator from '../components/FleetCalculator';
 import WalletConnect from '../components/WalletConnect';
-import { Tool, Inscription } from '../types';
+import { Tool } from '../types';
 import { useBitcoinData } from '../contexts/BitcoinContext';
+import { useUserHashcrafters } from '../hooks/useUserHashcrafters';
 
 const HomePage: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
-  const { bitcoinData, loading, error } = useBitcoinData();
-  const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
-
-  const filterHashcrafters = useCallback((inscriptions: Inscription[]): Inscription[] => {
-    const toolNames = tools.map(tool => tool.name);
-    return inscriptions.filter(inscription =>
-      inscription.metadata &&
-      toolNames.includes(inscription.metadata.Name)
-    );
-  }, [tools]);
-
-  const fetchInscriptions = useCallback(async (address: string) => {
-    try {
-      const response = await fetch(`/api/verify-ordinals?address=${address}`);
-      if (response.ok) {
-        const responseData = await response.json();
-        if (responseData.data && Array.isArray(responseData.data)) {
-          const hashcrafters = filterHashcrafters(responseData.data);
-          console.log('Hashcrafters found:', hashcrafters);
-        } else {
-          console.error('Inscriptions data is not in the expected format:', responseData);
-        }
-      } else {
-        console.error('Failed to fetch inscriptions');
-      }
-    } catch (error) {
-      console.error('Error fetching inscriptions:', error);
-    }
-  }, [filterHashcrafters]);
+  const { bitcoinData, loading: bitcoinLoading, error: bitcoinError } = useBitcoinData();
+  const { userHashcrafters, loading: hashcraftersLoading, error: hashcraftersError } = useUserHashcrafters();
+  const [, setConnectedAddress] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -52,14 +29,27 @@ const HomePage: React.FC = () => {
     fetchTools();
   }, []);
 
-  useEffect(() => {
-    if (connectedAddress) {
-      fetchInscriptions(connectedAddress);
-    }
-  }, [connectedAddress, fetchInscriptions]);
-
   const handleAddressChange = (address: string | null) => {
     setConnectedAddress(address);
+  };
+
+  const verifyStoredHashcrafters = () => {
+    console.log('Verifying stored Hashcrafters...');
+    if (userHashcrafters.length > 0) {
+      console.log('Number of stored Hashcrafters:', userHashcrafters.length);
+      userHashcrafters.forEach((hashcrafter, index) => {
+        console.log(`Hashcrafter ${index + 1}:`);
+        console.log('  Inscription ID:', hashcrafter.inscription_id);
+        console.log('  Name:', hashcrafter.metadata?.Name);
+        console.log('  Model:', hashcrafter.metadata?.Model);
+        console.log('  Hashrate:', hashcrafter.metadata?.Hashrate);
+        console.log('  Rarity:', hashcrafter.metadata?.Rarity);
+        console.log('---');
+      });
+    } else {
+      console.log('No Hashcrafters stored.');
+    }
+    console.log('Verification complete.');
   };
 
   return (
@@ -69,17 +59,25 @@ const HomePage: React.FC = () => {
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <Image src="/images/BTC.svg" alt="Bitcoin logo" width={32} height={32} />
-            {loading ? (
+            {bitcoinLoading ? (
               <span className="text-lg font-semibold">Loading...</span>
-            ) : error ? (
+            ) : bitcoinError ? (
               <span className="text-lg font-semibold text-red-500">Error loading BTC price</span>
             ) : (
               <span className="text-lg font-semibold">${bitcoinData?.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             )}
           </div>
-          <WalletConnect onAddressChange={handleAddressChange} />
+          <WalletConnect onAddressChange={handleAddressChange} tools={tools} />
         </div>
       </div>
+      <button
+        onClick={verifyStoredHashcrafters}
+        className="bg-green-500 text-white px-4 py-2 rounded mb-4"
+      >
+        Verify Stored Hashcrafters
+      </button>
+      {hashcraftersLoading && <p>Loading user's Hashcrafters...</p>}
+      {hashcraftersError && <p className="text-red-500">Error: {hashcraftersError}</p>}
       <h2 className="text-2xl font-bold mb-8 mt-4">Available HashCrafters</h2>
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-[65%]">

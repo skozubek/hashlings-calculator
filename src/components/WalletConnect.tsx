@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+// components/WalletConnect.tsx
+
+import React from 'react';
 import { getAddress, GetAddressResponse, AddressPurpose, BitcoinNetworkType } from 'sats-connect';
+import { useUserHashcrafters } from '../hooks/useUserHashcrafters';
+import { Tool } from '../types';
 
 interface WalletConnectProps {
   onAddressChange: (address: string | null) => void;
+  tools: Tool[];
 }
 
-const WalletConnect: React.FC<WalletConnectProps> = ({ onAddressChange }) => {
-  const [address, setAddress] = useState<string | null>(null);
+const WalletConnect: React.FC<WalletConnectProps> = ({ onAddressChange, tools }) => {
+  const { fetchAndFilterUserHashcrafters } = useUserHashcrafters();
+  const [address, setAddress] = React.useState<string | null>(null);
 
   const connectWallet = async () => {
     try {
@@ -18,10 +24,11 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onAddressChange }) => {
             type: 'Mainnet' as BitcoinNetworkType,
           },
         },
-        onFinish: (response: GetAddressResponse) => {
+        onFinish: async (response: GetAddressResponse) => {
           const newAddress = response.addresses[0].address;
           setAddress(newAddress);
           onAddressChange(newAddress);
+          await fetchAndFilterUserHashcrafters(newAddress, tools);
         },
         onCancel: () => alert('Wallet connection cancelled'),
       };
@@ -33,33 +40,17 @@ const WalletConnect: React.FC<WalletConnectProps> = ({ onAddressChange }) => {
     }
   };
 
-  const truncateAddress = (address: string) => {
-    return `${address.slice(0, 5)}...${address.slice(-3)}`;
-  };
-
-  const showHashCrafters = () => {
-    // This is a placeholder. You should implement the actual functionality here.
-    alert('Showing HashCrafters (to be implemented)');
+  const truncateAddress = (addr: string) => {
+    return addr.slice(0, 5) + '...' + addr.slice(-3);
   };
 
   return (
-    <div>
-      {!address ? (
-        <button
-          onClick={connectWallet}
-          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
-        >
-          Connect Xverse Wallet
-        </button>
-      ) : (
-        <button
-          onClick={showHashCrafters}
-          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
-        >
-          {truncateAddress(address)}
-        </button>
-      )}
-    </div>
+    <button
+      onClick={connectWallet}
+      className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+    >
+      {address ? truncateAddress(address) : 'Connect Xverse Wallet'}
+    </button>
   );
 };
 
