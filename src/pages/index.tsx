@@ -35,43 +35,40 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">HashCrafters Calculator</h1>
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
+      <div className="mb-12">
+        <h1 className="text-4xl md:text-6xl font-bold text-center my-12">HashCrafters Calculator</h1>
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="flex items-center mb-4 md:mb-0">
             <Image src="/images/BTC.svg" alt="Bitcoin logo" width={32} height={32} />
             {bitcoinLoading ? (
-              <span className="text-lg font-semibold">Loading...</span>
+              <span className="text-lg font-semibold ml-2">Loading...</span>
             ) : bitcoinError ? (
-              <span className="text-lg font-semibold text-red-500">Error loading BTC price</span>
+              <span className="text-lg font-semibold text-red-500 ml-2">Error loading BTC price</span>
             ) : (
-              <span className="text-lg font-semibold">${bitcoinData?.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <span className="text-lg font-semibold ml-2">${bitcoinData?.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
             )}
           </div>
           <WalletConnect onAddressChange={handleAddressChange} tools={tools} />
         </div>
       </div>
 
-      {hashcraftersLoading && <p>Loading users Hashcrafters...</p>}
-      {hashcraftersError && <p className="text-red-500">Error: {hashcraftersError}</p>}
-      <h2 className="text-2xl font-bold mb-8 mt-4">Available HashCrafters</h2>
-      {userHashcrafters.length > 0 && (
-  <p>You have {userHashcrafters.length} Hashcrafter(s) in your wallet.</p>
-    )}
+      {hashcraftersLoading && <p className="text-center">Loading users Hashcrafters...</p>}
+      {hashcraftersError && <p className="text-center text-red-500">Error: {hashcraftersError}</p>}
+
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-[65%]">
+          <h2 className="text-2xl font-bold mb-4">Available HashCrafters</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {tools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
             ))}
           </div>
         </div>
+
         <div className="lg:w-[35%]">
-          <div className="sticky top-8">
+          <div className="sticky top-8 space-y-8">
             <FleetCalculator />
-            <div className="mt-8">
-              <InventoryManager />
-            </div>
+            <InventoryManager />
           </div>
         </div>
       </div>
