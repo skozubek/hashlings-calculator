@@ -13,7 +13,7 @@ import { useUserHashcrafters } from '../hooks/useUserHashcrafters';
 const HomePage: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
   const { bitcoinData, loading: bitcoinLoading, error: bitcoinError } = useBitcoinData();
-  const { userHashcrafters, loading: hashcraftersLoading, error: hashcraftersError } = useUserHashcrafters();
+  const { loading: hashcraftersLoading, error: hashcraftersError } = useUserHashcrafters();
   const [, setConnectedAddress] = useState<string | null>(null);
 
   useEffect(() => {
